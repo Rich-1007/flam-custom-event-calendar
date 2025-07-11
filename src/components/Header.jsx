@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <>
-      <div className="flex flex-col w-full justify-center items-center pt-7 pb-2 px-14">
+      <div className="bg-white flex flex-col w-full justify-center items-center pt-7 pb-2 px-14">
         <span className="text-5xl font-bold">Custom Event Calendar</span>
         <div className="flex text-xl  w-full items-center justify-between py-3 px-10">
           <div className="flex gap-3">
