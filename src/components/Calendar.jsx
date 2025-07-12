@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format, addDays } from "date-fns";
 import EventModal from "./EventModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,9 +24,9 @@ const Calendar = () => {
   const openModal = useSelector((state) => state.showModalReducer.isShow);
 
   const events = useSelector((state) => state.AllEventsReducer.events);
-  // if (events.length > 0) {
-  //   console.log(events);
-  // }
+  if (events.length > 1) {
+    console.log(events);
+  }
 
   const [dayForEvent, setDayForEvent] = useState("");
 
@@ -35,6 +35,16 @@ const Calendar = () => {
     dispatch({ type: "SHOW_MODAL" });
     setDayForEvent(item);
   };
+
+  // const events = useSelector((state) => state.AllEventsReducer.events);
+  
+  //   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    // dispatch({ type: "FETCH_EVENTS" });
+    console.log(events);
+  }, []);
 
   return (
     <>
@@ -54,7 +64,7 @@ const Calendar = () => {
           <>
             <div
               onClick={() => HandleShowModal(item)}
-              className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 text-xl"
+              className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 text-xl hover:cursor-pointer"
             >
               <div className=" h-full w-full flex flex-col justify-between">
                 <div className=" flex justify-end">{item}</div>

@@ -6,7 +6,7 @@ const EventModal = ({ dayForEvent }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const [selectColor, setSelectColor] = useState("");
+  const [selectColor, setSelectColor] = useState("#A28B55");
 
   const events = useSelector((state) => state.AllEventsReducer.events);
   const filteredEvents = events.filter(
@@ -21,13 +21,7 @@ const EventModal = ({ dayForEvent }) => {
 
     }
 
-    // if (filteredEvents.length > 0) {
-    //     setTitle(filteredEvents[0].event_title);
-    //     setDescription(filteredEvents[0].event_description);
-    // } else {
-    //     setTitle("");
-    //     setDescription("");
-    // }
+   
   }, [events]);
 
   const HandleCloseModal = () => {
@@ -36,6 +30,11 @@ const EventModal = ({ dayForEvent }) => {
 
   const HandleEvent = (e) => {
     e.preventDefault();
+
+    if (title.trim() === "") {
+      alert("Please enter a title for the event.");
+      return;
+    }
 
     const updatedEvent = {
       dayForEvent,
@@ -61,6 +60,8 @@ const EventModal = ({ dayForEvent }) => {
       type: "REMOVE_EVENT",
       payload: filteredEvents[0].dayForEvent,
     });
+
+    HandleCloseModal()
   };
 
   return (
@@ -174,7 +175,7 @@ const EventModal = ({ dayForEvent }) => {
                 <button
                   type="button"
                   onClick={(e) => handleDelete(e)}
-                  className="px-4 py-2 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors flex items-center"
+                  className="px-4 py-2 bg-red-500 text-red-100 rounded-md hover:bg-red-700 transition-colors flex items-center"
                 >
                   {/* <Trash className="h-4 w-4 mr-1" /> */}
                   Delete
@@ -183,7 +184,7 @@ const EventModal = ({ dayForEvent }) => {
                 <div></div>
               )}
               <div className="space-x-2">
-                <button
+                <button onClick={HandleCloseModal}
                   type="button"
                   // onClick={onClose}
                   className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"

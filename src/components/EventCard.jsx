@@ -6,6 +6,7 @@ const EventCard = ({ day }) => {
 
   const filteredEvents = events.filter((event) => event.dayForEvent === day);
 
+  
   //   console.log(filteredEvents[0]?.event_title);
 
   return (
