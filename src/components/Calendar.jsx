@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { format, addDays } from "date-fns";
+import EventModal from "./EventModal";
 
 const WEEK_DAYS = [
   "Sunday",
@@ -16,7 +17,15 @@ const numbers = [
   23, 24, 25, 26, 27, 28, 29, 30,
 ];
 
+
 const Calendar = () => {
+
+
+  const [showModal,setShowModal] = useState(false);
+  const HandleShowModal = () => {
+    setShowModal(true)
+  
+  }
   return (
     <>
       <div className="shadow px-12 py-3 mx-12 bg-gray-200 rounded-t-xl border-b border-gray-400 grid grid-cols-7">
@@ -30,11 +39,17 @@ const Calendar = () => {
           </div>
         ))}
       </div>
-      <div className="shadow px-12 py-3 mx-12  bg-gray-200 rounded-b-xl grid grid-cols-7 text-center gap-5">
+      <div className="shadow px-12 py-3 mx-12 mb-8  bg-gray-200 rounded-b-xl grid grid-cols-7 text-center gap-5">
         {numbers.map((item) => (
-          <div className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 ">{item}</div>
+          <div onClick={() => HandleShowModal()} className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 text-xl">{item}</div>
         ))}
       </div>
+
+      {showModal && (
+        <EventModal 
+        setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
