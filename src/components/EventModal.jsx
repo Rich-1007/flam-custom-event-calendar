@@ -1,6 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const EventModal = ({ setShowModal }) => {
+const EventModal = ({ dayForEvent }) => {
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const events = useSelector((state) => state.AllEventsReducer.events);
+  const filteredEvents = events.filter(
+    (event) => event.dayForEvent === dayForEvent
+  );
+
+  useEffect(() => {
+    if (filteredEvents.length > 0) {
+      console.log(filteredEvents[0].event_title);
+      setTitle(filteredEvents[0].event_title);
+    }
+
+    // if (filteredEvents.length > 0) {
+    //     setTitle(filteredEvents[0].event_title);
+    //     setDescription(filteredEvents[0].event_description);
+    // } else {
+    //     setTitle("");
+    //     setDescription("");
+    // }
+  }, [events]);
+
+  const HandleCloseModal = () => {
+    dispatch({ type: "HIDE_MODAL" });
+  };
+
+  const HandleEvent = (e) => {
+    e.preventDefault();
+
+    const updatedEvent = {
+      dayForEvent,
+      event_title: title,
+      event_date: "2025-07-08", // optionally make this dynamic later
+      event_description: description,
+    };
+
+    if (filteredEvents.length > 0) {
+      dispatch({ type: "UPDATE_EVENT", payload: updatedEvent });
+    } else {
+      dispatch({ type: "ADD_EVENT", payload: updatedEvent });
+    }
+
+    // Optional: close the modal after saving
+    dispatch({ type: "HIDE_MODAL" });
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    dispatch({
+      type: "REMOVE_EVENT",
+      payload: filteredEvents[0].dayForEvent,
+    });
+  };
+
   return (
     <>
       <div
@@ -14,7 +72,7 @@ const EventModal = ({ setShowModal }) => {
             </h2>
             <button
               className="text-gray-800 hover:text-gray-700"
-              // onClick={onClose}
+              onClick={HandleCloseModal}
             >
               X
             </button>
@@ -30,8 +88,8 @@ const EventModal = ({ setShowModal }) => {
               </label>
               <input
                 type="text"
-                //   value={title}
-                //   onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Add title"
                 autoFocus
@@ -57,8 +115,8 @@ const EventModal = ({ setShowModal }) => {
                 Description
               </label>
               <textarea
-                //   value={description}
-                //   onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 //   rows={3}
                 placeholder="Add description"
@@ -66,10 +124,10 @@ const EventModal = ({ setShowModal }) => {
             </div>
 
             <div className="flex justify-between pt-4 border-t">
-              {true ? (
+              {filteredEvents.length > 0 ? (
                 <button
                   type="button"
-                  // onClick={handleDelete}
+                  onClick={(e) => handleDelete(e)}
                   className="px-4 py-2 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors flex items-center"
                 >
                   {/* <Trash className="h-4 w-4 mr-1" /> */}
@@ -87,10 +145,11 @@ const EventModal = ({ setShowModal }) => {
                   Cancel
                 </button>
                 <button
+                  onClick={(e) => HandleEvent(e)}
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
-                  {true ? "Update" : "Save"}
+                  {filteredEvents.length > 0 ? "Update" : "Save"}
                 </button>
               </div>
             </div>

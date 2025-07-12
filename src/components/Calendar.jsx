@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { format, addDays } from "date-fns";
 import EventModal from "./EventModal";
+import { useDispatch, useSelector } from "react-redux";
+import EventCard from "./EventCard";
 
 const WEEK_DAYS = [
   "Sunday",
@@ -17,15 +19,23 @@ const numbers = [
   23, 24, 25, 26, 27, 28, 29, 30,
 ];
 
-
 const Calendar = () => {
+  const dispatch = useDispatch();
+  const openModal = useSelector((state) => state.showModalReducer.isShow);
 
+  const events = useSelector((state) => state.AllEventsReducer.events);
+  // if (events.length > 0) {
+  //   console.log(events);
+  // }
 
-  const [showModal,setShowModal] = useState(false);
-  const HandleShowModal = () => {
-    setShowModal(true)
-  
-  }
+  const [dayForEvent, setDayForEvent] = useState("");
+
+  const HandleShowModal = (item) => {
+    // setShowModal(true)
+    dispatch({ type: "SHOW_MODAL" });
+    setDayForEvent(item);
+  };
+
   return (
     <>
       <div className="shadow px-12 py-3 mx-12 bg-gray-200 rounded-t-xl border-b border-gray-400 grid grid-cols-7">
@@ -41,15 +51,23 @@ const Calendar = () => {
       </div>
       <div className="shadow px-12 py-3 mx-12 mb-8  bg-gray-200 rounded-b-xl grid grid-cols-7 text-center gap-5">
         {numbers.map((item) => (
-          <div onClick={() => HandleShowModal()} className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 text-xl">{item}</div>
+          <>
+            <div
+              onClick={() => HandleShowModal(item)}
+              className="bg-[#c0c0c0] rounded h-20 flex justify-end px-3 py-1 text-xl"
+            >
+              <div className=" h-full w-full flex flex-col justify-between">
+                <div className=" flex justify-end">{item}</div>
+                <div className="bg-gray-400">
+                  <EventCard day={item}/>
+                </div>
+              </div>
+            </div>
+          </>
         ))}
       </div>
 
-      {showModal && (
-        <EventModal 
-        setShowModal={setShowModal}
-        />
-      )}
+      {openModal && <EventModal dayForEvent={dayForEvent} />}
     </>
   );
 };
