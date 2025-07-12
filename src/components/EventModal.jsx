@@ -6,6 +6,8 @@ const EventModal = ({ dayForEvent }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const [selectColor, setSelectColor] = useState("");
+
   const events = useSelector((state) => state.AllEventsReducer.events);
   const filteredEvents = events.filter(
     (event) => event.dayForEvent === dayForEvent
@@ -15,6 +17,8 @@ const EventModal = ({ dayForEvent }) => {
     if (filteredEvents.length > 0) {
       console.log(filteredEvents[0].event_title);
       setTitle(filteredEvents[0].event_title);
+      setSelectColor(filteredEvents[0].EventColor);
+
     }
 
     // if (filteredEvents.length > 0) {
@@ -36,8 +40,9 @@ const EventModal = ({ dayForEvent }) => {
     const updatedEvent = {
       dayForEvent,
       event_title: title,
-      event_date: "2025-07-08", // optionally make this dynamic later
+      event_date: "2025-07-08", 
       event_description: description,
+      EventColor:selectColor,
     };
 
     if (filteredEvents.length > 0) {
@@ -46,7 +51,6 @@ const EventModal = ({ dayForEvent }) => {
       dispatch({ type: "ADD_EVENT", payload: updatedEvent });
     }
 
-    // Optional: close the modal after saving
     dispatch({ type: "HIDE_MODAL" });
   };
 
@@ -121,6 +125,48 @@ const EventModal = ({ dayForEvent }) => {
                 //   rows={3}
                 placeholder="Add description"
               ></textarea>
+            </div>
+
+            <div>
+              <label className="">Event Color</label>
+              <div className="flex space-x-2 py-2">
+                <div className="flex space-x-2">
+                  <div
+                    onClick={() => setSelectColor("#A28B55")}
+                    className={`h-8 w-8 rounded-full border-2 hover:cursor-pointer bg-[#A28B55] ${
+                      selectColor === "#A28B55" ? "border-gray-600" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    onClick={() => setSelectColor("#6B8A7A")}
+                    className={`h-8 w-8 rounded-full border-2 hover:cursor-pointer bg-[#6B8A7A] ${
+                      selectColor === "#6B8A7A" ? "border-gray-600" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    onClick={() => setSelectColor("#124076")}
+                    className={`h-8 w-8 rounded-full border-2 hover:cursor-pointer bg-[#124076] ${
+                      selectColor === "#124076" ? "border-gray-600" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    onClick={() => setSelectColor("#C68484")}
+                    className={`h-8 w-8 rounded-full border-2 hover:cursor-pointer bg-[#C68484] ${
+                      selectColor === "#C68484" ? "border-gray-600" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    onClick={() => setSelectColor("#96B6C5")}
+                    className={`h-8 w-8 rounded-full border-2 hover:cursor-pointer bg-[#96B6C5] ${
+                      selectColor === "#96B6C5" ? "border-gray-600" : ""
+                    }`}
+                  ></div>
+                </div>
+              </div>
             </div>
 
             <div className="flex justify-between pt-4 border-t">

@@ -1,6 +1,6 @@
 const initialState = {
   events: [
-    { dayForEvent: "", event_title: "", event_date: "", event_description: "" },
+    { EventColor:"", dayForEvent: "", event_title: "", event_date: "", event_description: "" },
   ],
 };
 
